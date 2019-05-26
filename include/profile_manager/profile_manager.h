@@ -16,6 +16,7 @@ class ProfileManager{
         boost::condition_variable cv;
 
     public:
+        ProfileManager();
         ProfileManager(ros::NodeHandle &n);
 
     public:

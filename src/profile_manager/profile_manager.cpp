@@ -1,5 +1,9 @@
 #include <profile_manager/profile_manager.h>
 
+ProfileManager::ProfileManager(){
+    //implement here
+}
+
 ProfileManager::ProfileManager(ros::NodeHandle &n){
     //implement here
 }
