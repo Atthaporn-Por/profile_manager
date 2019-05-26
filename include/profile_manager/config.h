@@ -7,6 +7,8 @@
 
 class Config{
     private:
+        double distance[4];
+
         double frequenzy;
         std::string name_space;
         std::string node_name;
