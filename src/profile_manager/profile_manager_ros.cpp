@@ -8,6 +8,10 @@ void ProfileManagerRos::peopleCb(const skeleton_msgs::People::ConstPtr &p){
     //implement here
 }   
 
+void  ProfileManagerRos::dbChangeCb(const dinsow_msgs::DBChange::ConstPtr &p){
+    //implement here
+}
+
 void ProfileManagerRos::publish(const dinsow_msgs::DinsowAction &action){
     //implement here
 }
