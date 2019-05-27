@@ -12,8 +12,8 @@ enum actionState{
     STATE_2,
     STATE_3,
     STATE_4,
-    BEFORE_IDLE_STATE,
-    ACTION_SIZE = BEFORE_IDLE_STATE +1
+    END_STATE,
+    ACTION_SIZE = END_STATE +1
 };
 
 #endif
