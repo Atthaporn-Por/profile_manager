@@ -9,11 +9,14 @@ class ManagerStrategy{
     private:
         State* state;
         Config* config;
+        geometry_msgs::Point focus_point;
     public:
         ManagerStrategy(State &state, Config& config);
         geometry_msgs::Point getFocusPoint();
         
-        std::string getCurrentState();
+        void setState(State state);
+        void setFocusPoint(const geometry_msgs::Point &p);
+        int getCurrentState();
         std::string getCurrentMode();
 };
 
