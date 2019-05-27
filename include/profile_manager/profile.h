@@ -4,13 +4,14 @@
 #include <ros/time.h>
 #include <geometry_msgs/Point.h>
 #include <profile_manager/constant.h>
+#include <profile_manager/state.h>
 
 struct Profile{
     const static int MAX_SIZE = 10;
     int id;
-    bool isActive[MAX_SIZE];
-    bool wasActive[MAX_SIZE];
-    ros::Time first_time[MAX_SIZE];
+    bool isActive[ACTION_SIZE];
+    bool wasActive[ACTION_SIZE];
+    ros::Time first_time[ACTION_SIZE];
     ros::Time seen_time;
     geometry_msgs::Point focus_point;
 
@@ -32,6 +33,11 @@ class Profiles{
         Profiles();
         void add(int id, const geometry_msgs::Point &p);
         void erase(int id);
+        
+        int getNearest();
+        bool wasAll(State &state);
+        double distanceOf(const Profile &p);
+
 };
 
 #endif
