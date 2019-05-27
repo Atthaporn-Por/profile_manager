@@ -7,6 +7,7 @@
 
 class Config{
     private:
+        int range_active;//state at 1
         double distance[4];
 
         double frequenzy;
