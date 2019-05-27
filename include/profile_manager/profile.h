@@ -33,7 +33,7 @@ class Profiles{
         Profiles();
         void add(int id, const geometry_msgs::Point &p);
         void erase(int id);
-        
+
         int getNearest();
         bool wasAll(State &state);
         double distanceOf(const Profile &p);
