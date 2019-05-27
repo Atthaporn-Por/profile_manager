@@ -1,17 +1,34 @@
 #include <profile_manager/profile_manager.h>
 
 ProfileManager::ProfileManager(){
-    //implement here
+    starting = false;
+    isReady = false;
+
+    this->state = new IdleState();
+    this->config = Config();
+    this->profiles = Profiles();
+    this->manager_strategy = new ManagerStrategy(*state, config);
 }
 
 ProfileManager::ProfileManager(ros::NodeHandle &n){
-    //implement here
+    boost::mutex::scoped_lock lock(mutex);
+    starting = false;
+    isReady = false;
+    
+    this->state = new IdleState();
+    this->config = Config(n);
+    this->profiles = Profiles();
+    this->manager_strategy = new ManagerStrategy(*state, config);
+
 }
 
 bool ProfileManager::start(){
-    //implement here
+    starting = true;
+    cv.notify_all();
+    return true;
 }
 
 bool ProfileManager::stop(){
-    //implement here
+    starting = false;
+    return true;
 }

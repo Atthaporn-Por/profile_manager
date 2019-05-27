@@ -18,7 +18,7 @@ class ProfileManager{
         Config config;
         Profiles profiles;
 
-        ManagerStrategy manager_strategy;
+        ManagerStrategy *manager_strategy;
         
         boost::thread worker;
         boost::mutex mutex;
