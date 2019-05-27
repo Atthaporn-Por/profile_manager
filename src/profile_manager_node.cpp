@@ -5,7 +5,7 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "profile_manager");
     ros::NodeHandle n;
-    ProfileMangerRos node(n);
+    ProfileManagerRos node(n);
     ros::spin();
     return 0;
 }
