@@ -5,6 +5,8 @@
 #include <profile_manager/constant.h>
 #include <profile_manager/manager_strategy.h>
 
+class ManagerStrategy;
+
 class State{
     protected:
         ros::Time before;
@@ -14,8 +16,8 @@ class State{
     public:
         State();
         State(double timeout);
-        virtual void execute(ManagerStrategy *manager);
-        virtual int getStateName();
+        virtual void execute(ManagerStrategy *manager) = 0;
+        virtual int getStateName() = 0;
 };
 
 class IdleState : public State{
