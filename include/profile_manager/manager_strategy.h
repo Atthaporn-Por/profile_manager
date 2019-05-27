@@ -5,6 +5,8 @@
 #include <profile_manager/config.h>
 #include <geometry_msgs/Point.h>
 
+class State;
+
 class ManagerStrategy{
     private:
         State* state;
@@ -14,7 +16,7 @@ class ManagerStrategy{
         ManagerStrategy(State &state, Config& config);
         geometry_msgs::Point getFocusPoint();
         
-        void setState(State state);
+        void setState(State *state);
         void setFocusPoint(const geometry_msgs::Point &p);
         int getCurrentState();
         std::string getCurrentMode();

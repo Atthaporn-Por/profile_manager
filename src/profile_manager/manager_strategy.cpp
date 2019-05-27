@@ -19,8 +19,8 @@ std::string ManagerStrategy::getCurrentMode(){
     //implement here
 }
 
-void ManagerStrategy::setState(State state){
-    this->state = &state;
+void ManagerStrategy::setState(State *state){
+    this->state = state;
 }
 
 void ManagerStrategy::setFocusPoint(const geometry_msgs::Point &p){
