@@ -3,6 +3,7 @@
 
 #include <ros/ros.h>
 #include <profile_manager/profile_manager.h>
+
 #include <skeleton_msgs/People.h>
 #include <dinsow_msgs/DinsowAction.h>
 #include <geometry_msgs/Point.h>
@@ -29,7 +30,7 @@ class ProfileManagerRos : public ProfileManager{
         void dbChangeCb(const dinsow_msgs::DBChange::ConstPtr &p);
 
         void publish(const dinsow_msgs::DinsowAction &action);
-        void publish(const std::string &s);
+        void publish(const std_msgs::String &s);
         void publish(const geometry_msgs::Point &p);
         
         bool startService(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res);
@@ -40,4 +41,4 @@ class ProfileManagerRos : public ProfileManager{
         void callDinsowConfig();
 };
 
-#endif;
+#endif

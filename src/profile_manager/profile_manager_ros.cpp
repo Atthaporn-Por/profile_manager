@@ -51,7 +51,7 @@ void ProfileManagerRos::publish(const dinsow_msgs::DinsowAction &action){
     action_pub.publish(action);
 }
 
-void ProfileManagerRos::publish(const std::string &s){
+void ProfileManagerRos::publish(const std_msgs::String &s){
     state_pub.publish(s);
 }
 
