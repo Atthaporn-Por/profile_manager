@@ -1,24 +1,29 @@
 #include <profile_manager/state.h>
 
-State::State(Profiles* profiles){
+State::State(Profiles* profiles, double *distance){
     this->before = ros::Time::now();
     this->latest = ros::Time::now();
     this->profiles = profiles;
     this->timeout = ros::Duration(0.5);
     this->first_call = false;
+    this->distance = distance;
 }
 
 void State::setTimeout(double timeout){
     this->timeout = ros::Duration(timeout);
 }
 /*---------------------------- IdleState ---------------------------*/
-IdleState::IdleState(Profiles* profiles) : State(profiles) {
+IdleState::IdleState(Profiles* profiles, double *distance) : State(profiles, distance) {
     first_call = true;
 }
 
 void IdleState::execute(ManagerStrategy *manager){
     //implement here
-    
+    // if(!profiles->isEmpty()){
+    //     if(profiles->getNearestDistance() > ){
+
+    //     }
+    // }
 }
 
 int IdleState::getStateName(){
@@ -27,7 +32,7 @@ int IdleState::getStateName(){
 
 /*---------------------------- FirstState ---------------------------*/
 
-FirstState::FirstState(Profiles* profiles) : State(profiles){
+FirstState::FirstState(Profiles* profiles, double *distance) : State(profiles, distance){
     first_call = true;
 }
 
@@ -40,7 +45,7 @@ int FirstState::getStateName(){
 }
 
 /*---------------------------- SecondState ---------------------------*/
-SecondState::SecondState(Profiles* profiles) : State(profiles) {
+SecondState::SecondState(Profiles* profiles, double *distance) : State(profiles, distance) {
     first_call = true;
 }
 
@@ -53,7 +58,7 @@ int SecondState::getStateName(){
 }
 
 /*---------------------------- ThirdState ---------------------------*/
-ThirdState::ThirdState(Profiles* profiles) : State(profiles) {
+ThirdState::ThirdState(Profiles* profiles, double *distance) : State(profiles, distance) {
     first_call = true;
 } 
 
@@ -66,7 +71,7 @@ int ThirdState::getStateName(){
 }
 
 /*---------------------------- FourthState ---------------------------*/
-FourthState::FourthState(Profiles* profiles) : State(profiles) {
+FourthState::FourthState(Profiles* profiles, double *distance) : State(profiles, distance) {
     first_call = true;
 }
 
@@ -79,7 +84,7 @@ int FourthState::getStateName(){
 }
 
 /*---------------------------- EndState ---------------------------*/
-EndState::EndState(Profiles* profiles) : State(profiles) {
+EndState::EndState(Profiles* profilesm, double *distance) : State(profiles, distance) {
     first_call = true;
 } 
 
