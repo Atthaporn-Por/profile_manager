@@ -43,6 +43,7 @@ class Profiles{
         int getNearestId();
         geometry_msgs::Point getFocusPoint(int id);
         geometry_msgs::Point getNearestPoint();
+        geometry_msgs::Point getNearestPoint(State &state, double max_distance);
         double getNearestDistance();
         double distanceOf(const Profile &p);
         double distanceOf(const geometry_msgs::Point &p);

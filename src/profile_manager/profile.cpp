@@ -75,6 +75,34 @@ geometry_msgs::Point Profiles::getFocusPoint(int id){
      throw "no id : %d in profiles", id;
 }
 
+geometry_msgs::Point Profiles::getNearestPoint(State& state, double max_distance){
+    if(isEmpty())
+        throw "profiles is empty";
+    if(wasAll(state)){
+        return getNearestPoint();
+    }else{
+        std::vector<Profile>::iterator p = profiles.end();
+        for(auto q = profiles.begin(); q != profiles.end();q++){
+            if(!q->wasActive[state.getState()]){
+                if(distanceOf(*q) < pow(max_distance, 2)){
+                    if(p == profiles.end()){
+                        p = q;
+                    }else if(distanceOf(*q) < distanceOf(*p) ){
+                        p = q;
+                    }
+                }
+            }
+        }
+        if(p == profiles.end()){
+            return getNearestPoint();
+        }else{
+            return p->focus_point;
+        }
+    }
+
+
+}
+
 bool Profiles::isEmpty(){
     return profiles.size() == 0;
 }
