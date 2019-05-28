@@ -4,6 +4,10 @@
 #include <ros/ros.h>
 #include <profile_manager/constant.h>
 #include <profile_manager/manager_strategy.h>
+#include <profile_manager/profile.h>
+
+//send focus_point by setter of manager_strategy
+
 
 class ManagerStrategy;
 
@@ -13,57 +17,52 @@ class State{
         ros::Time latest;
         ros::Duration timeout;
         bool first_call;
+        Profiles* profiles
     public:
         State();
-        State(double timeout);
+        State(Profiles* profiles, double timeout);
         virtual void execute(ManagerStrategy *manager) = 0;
         virtual int getStateName() = 0;
 };
 
 class IdleState : public State{
     public:
-        IdleState();
-        IdleState(double timeout);
+        IdleState(Profiles* profiles, double timeout);
         void execute(ManagerStrategy *manager);
         int getStateName();
 };
 
 class FirstState : public State{
     public:
-        FirstState();
-        FirstState(double timeout);
+        FirstState(Profiles* profiles, double timeout);
         void execute(ManagerStrategy *manager);
         int getStateName();
 };
 
 class SecondState : public State{
     public:
-        SecondState();
-        SecondState(double timeout);
+        SecondState(Profiles* profiles, double timeout);
         void execute(ManagerStrategy *manager);
         int getStateName();
 };
 
 class ThirdState : public State{
     public:
-        ThirdState();
-        ThirdState(double timeout);
+        ThirdState(Profiles* profiles, double timeout);
         void execute(ManagerStrategy *manager);
         int getStateName();
 };
 
 class FourthState : public State{
     public:
-        FourthState();
-        FourthState(double timeout);
+        FourthState(Profiles* profiles, double timeout);
         void execute(ManagerStrategy *manager);
         int getStateName();
 };
 
 class EndState : public State{
     public:
-        EndState();
-        EndState(double timeout);
+        EndState(Profiles* profiles, double timeout);
         void execute(ManagerStrategy *manager);
         int getStateName();
 };

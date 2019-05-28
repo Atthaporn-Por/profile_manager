@@ -1,36 +1,20 @@
 #include <profile_manager/state.h>
 
-State::State(){
+State::State(Profiles* profiles, double timeout){
     this->before = ros::Time::now();
     this->latest = ros::Time::now();
-    this->timeout = ros::Duration(2.0);
-    this->first_call = false;
-}
-
-State::State(double timeout){
-    this->before = ros::Time::now();
-    this->latest = ros::Time::now();
+    this->profiles = profiles;
     this->timeout = ros::Duration(timeout);
     this->first_call = false;
 }
 /*---------------------------- IdleState ---------------------------*/
-IdleState::IdleState() : State() {
-    first_call = true;
-}
-
-IdleState::IdleState(double timeout) : State(timeout) {
+IdleState::IdleState(Profiles* profiles, double timeout) : State(profiles, timeout) {
     first_call = true;
 }
 
 void IdleState::execute(ManagerStrategy *manager){
     //implement here
-    if(first_call){
-        if(ros::Time::now() - latest > ros::Duration(0.5)){
-            this->first_call = false;
-        }else if(ros::Time::now() - latest > timeout){
-            this->first_call = false;
-        }
-    }
+    
 }
 
 int IdleState::getStateName(){
@@ -38,11 +22,8 @@ int IdleState::getStateName(){
 }
 
 /*---------------------------- FirstState ---------------------------*/
-FirstState::FirstState() : State(){
-    first_call = true;
-}
 
-FirstState::FirstState(double timeout) : State(timeout){
+FirstState::FirstState(Profiles* profiles, double timeout) : State(profiles, timeout){
     first_call = true;
 }
 
@@ -55,11 +36,7 @@ int FirstState::getStateName(){
 }
 
 /*---------------------------- SecondState ---------------------------*/
-SecondState::SecondState() : State() {
-    first_call = true;
-}
-
-SecondState::SecondState(double timeout) : State(timeout) {
+SecondState::SecondState(Profiles* profiles, double timeout) : State(profiles, timeout) {
     first_call = true;
 }
 
@@ -72,11 +49,7 @@ int SecondState::getStateName(){
 }
 
 /*---------------------------- ThirdState ---------------------------*/
-ThirdState::ThirdState() : State() {
-    first_call = true;
-}
-
-ThirdState::ThirdState(double timeout) : State(timeout) {
+ThirdState::ThirdState(Profiles* profiles, double timeout) : State(profiles, timeout) {
     first_call = true;
 } 
 
@@ -89,11 +62,7 @@ int ThirdState::getStateName(){
 }
 
 /*---------------------------- FourthState ---------------------------*/
-FourthState::FourthState() : State() {
-    first_call = true;
-}
-
-FourthState::FourthState(double timeout) : State(timeout) {
+FourthState::FourthState(Profiles* profiles, double timeout) : State(profiles, timeout) {
     first_call = true;
 }
 
@@ -106,11 +75,7 @@ int FourthState::getStateName(){
 }
 
 /*---------------------------- EndState ---------------------------*/
-EndState::EndState() : State() {
-    first_call = true;
-}
-
-EndState::EndState(double timeout) : State(timeout) {
+EndState::EndState(Profiles* profiles, double timeout) : State(profiles, timeout) {
     first_call = true;
 } 
 
