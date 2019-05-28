@@ -6,6 +6,10 @@ Config::Config(){
     this->distance[1] = 1.00;
     this->distance[2] = 2.00;
     this->distance[3] = 3.50;
+    this->timeout[0] = 5.0;
+    this->timeout[1] = 5.0;
+    this->timeout[2] = 5.0;
+    this->timeout[3] = 5.0;
     this->name_space = "/";
     this->node_name = "/profile_manager";
     for(int i=0;i<ACTION_SIZE;i++){
@@ -30,6 +34,10 @@ Config::Config(ros::NodeHandle &n){
     n.param<std::string>(resolveTopic("state_3_action"), state_action[STATE_3].action_id, "10004");
     n.param<std::string>(resolveTopic("state_4_action"), state_action[STATE_4].action_id, "10005");
     n.param<std::string>(resolveTopic("end_state_action"), state_action[END_STATE].action_id, "10006");
+    n.param<double>(resolveTopic("state_1_timeout"), timeout[0], 5.0);
+    n.param<double>(resolveTopic("state_2_timeout"), timeout[1], 5.0);
+    n.param<double>(resolveTopic("state_3_timeout"), timeout[2], 5.0);
+    n.param<double>(resolveTopic("state_4_timeout"), timeout[3], 5.0);
     for(int i=0;i<ACTION_SIZE;i++){
         state_action[i].json_data = "";
         state_action[i].requester = this->node_name;
@@ -55,4 +63,8 @@ std::string Config::getBaseFrame(){
 
 double Config::getFrequenzy(){
     return frequenzy;
+}
+
+double Config::getTimeout(int state){
+    return timeout[state];
 }

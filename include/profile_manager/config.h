@@ -8,7 +8,8 @@
 class Config{
     private:
         int range_active;//state at 1
-        double distance[4];
+        double distance[ACTION_SIZE];
+        double timeout[ACTION_SIZE];
 
         double frequenzy;
         std::string name_space;
@@ -23,6 +24,7 @@ class Config{
         std::string resolveTopic(const std::string &topic);
         std::string getBaseFrame();
         double getFrequenzy();
+        double getTimeout(int state);
 };
 
 #endif
