@@ -23,7 +23,7 @@ ProfileManagerRos::ProfileManagerRos(ros::NodeHandle &n) : ProfileManager(n){
 
 void ProfileManagerRos::peopleCb(const skeleton_msgs::People::ConstPtr &p){
     for(auto person : p->people){
-        profiles.add(std::atoi(person.name.c_str()), person.skeleton.joints[0].position);
+        profiles.add(state, std::atoi(person.name.c_str()), person.skeleton.joints[0].position);
     }
 }   
 
