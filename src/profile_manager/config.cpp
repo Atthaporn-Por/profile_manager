@@ -46,7 +46,7 @@ Config::Config(ros::NodeHandle &n){
     }
 }
 
-dinsow_msgs::DinsowAction Config::getAction(actionState state){
+dinsow_msgs::DinsowAction Config::getAction(int state){
     return state_action[state];
 }
 
@@ -74,6 +74,9 @@ double Config::getTimeout(int state){
     return timeout[key[state]];
 }
 
-double* Config::getTimeout(){
+double* Config::getDistanceArray(){
+    return distance;
+}
+double* Config::getTimeoutArray(){
     return timeout;
 }

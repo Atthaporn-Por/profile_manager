@@ -20,12 +20,13 @@ class Config{
         Config();
         Config(ros::NodeHandle &n);
 
-        dinsow_msgs::DinsowAction getAction(actionState state);
+        dinsow_msgs::DinsowAction getAction(int state);
         std::string resolveTopic(const std::string &topic);
         std::string getBaseFrame();
         double getFrequenzy();
         double getTimeout(int state);
-        double* getTimeout();
+        double* getDistanceArray();
+        double* getTimeoutArray();
 };
 
 #endif
