@@ -10,6 +10,8 @@ class Config{
         int range_active;//state at 1
         double distance[ACTION_SIZE];
         double timeout[ACTION_SIZE];
+        double short_follow_duration;
+        double long_follow_duration;
 
         double frequenzy;
         std::string name_space;
