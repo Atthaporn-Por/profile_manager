@@ -1,14 +1,18 @@
 #include <profile_manager/state.h>
 
-State::State(Profiles* profiles, double timeout){
+State::State(Profiles* profiles){
     this->before = ros::Time::now();
     this->latest = ros::Time::now();
     this->profiles = profiles;
-    this->timeout = ros::Duration(timeout);
+    this->timeout = ros::Duration(0.5);
     this->first_call = false;
 }
+
+void State::setTimeout(double timeout){
+    this->timeout = ros::Duration(timeout);
+}
 /*---------------------------- IdleState ---------------------------*/
-IdleState::IdleState(Profiles* profiles, double timeout) : State(profiles, timeout) {
+IdleState::IdleState(Profiles* profiles) : State(profiles) {
     first_call = true;
 }
 
@@ -23,7 +27,7 @@ int IdleState::getStateName(){
 
 /*---------------------------- FirstState ---------------------------*/
 
-FirstState::FirstState(Profiles* profiles, double timeout) : State(profiles, timeout){
+FirstState::FirstState(Profiles* profiles) : State(profiles){
     first_call = true;
 }
 
@@ -36,7 +40,7 @@ int FirstState::getStateName(){
 }
 
 /*---------------------------- SecondState ---------------------------*/
-SecondState::SecondState(Profiles* profiles, double timeout) : State(profiles, timeout) {
+SecondState::SecondState(Profiles* profiles) : State(profiles) {
     first_call = true;
 }
 
@@ -49,7 +53,7 @@ int SecondState::getStateName(){
 }
 
 /*---------------------------- ThirdState ---------------------------*/
-ThirdState::ThirdState(Profiles* profiles, double timeout) : State(profiles, timeout) {
+ThirdState::ThirdState(Profiles* profiles) : State(profiles) {
     first_call = true;
 } 
 
@@ -62,7 +66,7 @@ int ThirdState::getStateName(){
 }
 
 /*---------------------------- FourthState ---------------------------*/
-FourthState::FourthState(Profiles* profiles, double timeout) : State(profiles, timeout) {
+FourthState::FourthState(Profiles* profiles) : State(profiles) {
     first_call = true;
 }
 
@@ -75,7 +79,7 @@ int FourthState::getStateName(){
 }
 
 /*---------------------------- EndState ---------------------------*/
-EndState::EndState(Profiles* profiles, double timeout) : State(profiles, timeout) {
+EndState::EndState(Profiles* profiles) : State(profiles) {
     first_call = true;
 } 
 

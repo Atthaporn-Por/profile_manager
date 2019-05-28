@@ -17,52 +17,53 @@ class State{
         ros::Time latest;
         ros::Duration timeout;
         bool first_call;
-        Profiles* profiles
+        Profiles* profiles;
     public:
         State();
-        State(Profiles* profiles, double timeout);
+        State(Profiles* profiles);
+        void setTimeout(double timeout);
         virtual void execute(ManagerStrategy *manager) = 0;
         virtual int getStateName() = 0;
 };
 
 class IdleState : public State{
     public:
-        IdleState(Profiles* profiles, double timeout);
+        IdleState(Profiles* profiles);
         void execute(ManagerStrategy *manager);
         int getStateName();
 };
 
 class FirstState : public State{
     public:
-        FirstState(Profiles* profiles, double timeout);
+        FirstState(Profiles* profiles);
         void execute(ManagerStrategy *manager);
         int getStateName();
 };
 
 class SecondState : public State{
     public:
-        SecondState(Profiles* profiles, double timeout);
+        SecondState(Profiles* profiles);
         void execute(ManagerStrategy *manager);
         int getStateName();
 };
 
 class ThirdState : public State{
     public:
-        ThirdState(Profiles* profiles, double timeout);
+        ThirdState(Profiles* profiles);
         void execute(ManagerStrategy *manager);
         int getStateName();
 };
 
 class FourthState : public State{
     public:
-        FourthState(Profiles* profiles, double timeout);
+        FourthState(Profiles* profiles);
         void execute(ManagerStrategy *manager);
         int getStateName();
 };
 
 class EndState : public State{
     public:
-        EndState(Profiles* profiles, double timeout);
+        EndState(Profiles* profiles);
         void execute(ManagerStrategy *manager);
         int getStateName();
 };
