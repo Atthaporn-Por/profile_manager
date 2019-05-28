@@ -35,8 +35,10 @@ class Profiles{
         std::vector<Profile> profiles;
     public:
         Profiles();
-        void add(int id, const geometry_msgs::Point &p);
+        void add(State *state, int id, const geometry_msgs::Point &p);
         void erase(int id);
+        void setWasActive(State *state, int id);
+        void setWasActive(State *state, std::vector<Profile>::iterator i);
 
         bool isEmpty();
         bool wasAll(State &state);

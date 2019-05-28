@@ -1,18 +1,21 @@
 #include <profile_manager/profile.h>
 #include <exception>
+
 Profiles::Profiles(){
     this->profiles = std::vector<Profile>();
 }
 
 
-void Profiles::add(int id, const geometry_msgs::Point &p){
+void Profiles::add(State *state, int id, const geometry_msgs::Point &p){
     for(auto profile = profiles.begin(); profile != profiles.end(); profile++){
         if(profile->id == id){
             profile->focus_point = p;
+            setWasActive(state, id);
             break;
         }
     }
     profiles.push_back(Profile(id, p));
+    setWasActive(state, id);
 }
 
 void Profiles::erase(int id){
@@ -20,6 +23,24 @@ void Profiles::erase(int id){
         if(profile->id == id){
             profiles.erase(profile);
         }
+    }
+}
+
+void Profiles::setWasActive(State *state, int id){
+    for(auto profile = profiles.begin(); profile != profiles.end();profile++){
+        if(profile->id == id){
+            setWasActive(state, profile);
+            break;
+        }
+    }
+}
+
+void Profiles::setWasActive(State *state, std::vector<Profile>::iterator i){
+    for(int s = state->getState(); s>=STATE_1; s--){
+        if(s == FOLLOWING_STATE){
+            break;
+        }
+        i->wasActive[s] = true;
     }
 }
 
