@@ -15,59 +15,65 @@ class State{
     protected:
         ros::Time before;
         ros::Time latest;
-        ros::Duration timeout;
+        double *timeout;
         double *distance;
         bool first_call;
         Profiles* profiles;
     public:
         State();
-        State(Profiles* profiles, double *distance);
-        void setTimeout(double timeout);
-        void setDistance(double distance);
+        State(Profiles* profiles, double *distance, double *timeout);
+        void changeState(ManagerStrategy *manager, int state);
         virtual void execute(ManagerStrategy *manager) = 0;
-        virtual int getStateName() = 0;
+        virtual int getState() = 0;
+        virtual std::string getStateName() = 0;
 };
 
 class IdleState : public State{
     public:
-        IdleState(Profiles* profiles, double *distance);
+        IdleState(Profiles* profiles, double *distance, double *timeout);
         void execute(ManagerStrategy *manager);
-        int getStateName();
+        int getState();
+        std::string getStateName();
 };
 
 class FirstState : public State{
     public:
-        FirstState(Profiles* profiles, double *distance);
+        FirstState(Profiles* profiles, double *distance, double *timeout);
         void execute(ManagerStrategy *manager);
-        int getStateName();
+        int getState();
+        std::string getStateName();
 };
 
 class SecondState : public State{
     public:
-        SecondState(Profiles* profiles, double *distance);
+        SecondState(Profiles* profiles, double *distance, double *timeout);
         void execute(ManagerStrategy *manager);
-        int getStateName();
+        int getState();
+        std::string getStateName();
 };
 
 class ThirdState : public State{
     public:
-        ThirdState(Profiles* profiles, double *distance);
+        ThirdState(Profiles* profiles, double *distance, double *timeout);
         void execute(ManagerStrategy *manager);
-        int getStateName();
+        int getState();
+        std::string getStateName();
 };
 
 class FourthState : public State{
     public:
-        FourthState(Profiles* profiles, double *distance);
+        FourthState(Profiles* profiles, double *distance, double *timeout);
         void execute(ManagerStrategy *manager);
-        int getStateName();
+        int getState();
+        std::string getStateName();
 };
 
 class EndState : public State{
     public:
-        EndState(Profiles* profiles, double *distance);
+        EndState(Profiles* profiles, double *distance, double *timeout);
         void execute(ManagerStrategy *manager);
-        int getStateName();
+        int getState();
+        std::string getStateName();
 };
 
 #endif
