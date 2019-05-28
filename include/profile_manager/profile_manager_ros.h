@@ -23,6 +23,8 @@ class ProfileManagerRos : public ProfileManager{
         ros::ServiceServer start_service;
         ros::ServiceServer stop_service;
         ros::ServiceClient dinsow_config_client;
+
+        std_msgs::String current_state;
     public:
         ProfileManagerRos(ros::NodeHandle &n);
 
@@ -31,6 +33,7 @@ class ProfileManagerRos : public ProfileManager{
 
         void publish(const dinsow_msgs::DinsowAction &action);
         void publish(const std_msgs::String &s);
+        void publish(const std::string &s);
         void publish(const geometry_msgs::Point &p);
         
         bool startService(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res);
