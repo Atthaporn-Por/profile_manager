@@ -25,6 +25,7 @@ class Config{
         std::string getBaseFrame();
         double getFrequenzy();
         double getTimeout(int state);
+        double* getTimeout();
 };
 
 #endif
