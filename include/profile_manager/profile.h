@@ -5,6 +5,10 @@
 #include <geometry_msgs/Point.h>
 #include <profile_manager/constant.h>
 #include <profile_manager/state.h>
+#include <profile_manager/manager_strategy.h>
+#include <stdexcept>
+
+class ManagerStrategy;
 
 struct Profile{
     const static int MAX_SIZE = 10;
@@ -34,9 +38,14 @@ class Profiles{
         void add(int id, const geometry_msgs::Point &p);
         void erase(int id);
 
-        int getNearest();
+        bool isEmpty();
         bool wasAll(State &state);
+        int getNearestId();
+        geometry_msgs::Point getFocusPoint(int id);
+        geometry_msgs::Point getNearestPoint();
+        double getNearestDistance();
         double distanceOf(const Profile &p);
+        double distanceOf(const geometry_msgs::Point &p);
 
 };
 
