@@ -71,7 +71,9 @@ void ProfileManagerRos::run(){
             if(manager_strategy->doAction()){
                 publish(manager_strategy->getAction());
             }
-            publish(manager_strategy->getFocusPoint());
+            if(manager_strategy->getCurrentStateName == "FOLLOWING_STATE"){
+                publish(manager_strategy->getFocusPoint());
+            }
             publish(manager_strategy->getCurrentStateName());
         }
         r.sleep();
