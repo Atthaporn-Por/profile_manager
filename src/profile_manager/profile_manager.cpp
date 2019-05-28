@@ -3,10 +3,9 @@
 ProfileManager::ProfileManager(){
     starting = false;
     isReady = false;
-
-    this->state = new IdleState();
     this->config = Config();
     this->profiles = Profiles();
+    this->state = new IdleState(&profiles);
     this->manager_strategy = new ManagerStrategy(*state, config);
 }
 
@@ -15,11 +14,10 @@ ProfileManager::ProfileManager(ros::NodeHandle &n){
     starting = false;
     isReady = false;
     
-    this->state = new IdleState();
     this->config = Config(n);
     this->profiles = Profiles();
+    this->state = new IdleState(&profiles);
     this->manager_strategy = new ManagerStrategy(*state, config);
-
 }
 
 bool ProfileManager::start(){
