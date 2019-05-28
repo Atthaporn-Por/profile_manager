@@ -66,5 +66,8 @@ double Config::getFrequenzy(){
 }
 
 double Config::getTimeout(int state){
-    return timeout[state];
+    int key[] = {-1, 0, 1, 2, 3, -1};
+    if(key[state] == -1)
+        throw "this state dont have timeout";
+    return timeout[key[state]];
 }
