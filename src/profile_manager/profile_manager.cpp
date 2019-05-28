@@ -5,7 +5,7 @@ ProfileManager::ProfileManager(){
     isReady = false;
     this->config = Config();
     this->profiles = Profiles();
-    this->state = new IdleState(&profiles);
+    this->state = new IdleState(&profiles, config.getDistanceArray(), config.getTimeoutArray());
     this->manager_strategy = new ManagerStrategy(*state, config);
 }
 
@@ -16,7 +16,7 @@ ProfileManager::ProfileManager(ros::NodeHandle &n){
     
     this->config = Config(n);
     this->profiles = Profiles();
-    this->state = new IdleState(&profiles);
+    this->state = new IdleState(&profiles, config.getDistanceArray(), config.getTimeoutArray());
     this->manager_strategy = new ManagerStrategy(*state, config);
 }
 

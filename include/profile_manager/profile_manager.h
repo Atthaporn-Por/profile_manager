@@ -32,7 +32,6 @@ class ProfileManager{
         virtual void run() = 0;
         bool start();
         bool stop();
-    
 };
 
 #endif
