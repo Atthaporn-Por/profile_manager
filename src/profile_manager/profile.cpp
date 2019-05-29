@@ -120,8 +120,6 @@ geometry_msgs::Point Profiles::getNearestPoint(State& state, double max_distance
             return p->focus_point;
         }
     }
-
-
 }
 
 bool Profiles::isEmpty(){

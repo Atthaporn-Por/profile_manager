@@ -25,7 +25,6 @@ std::string ManagerStrategy::getCurrentMode(){
 }
 
 void ManagerStrategy::setState(State *state){
-    do_action = true;
     this->state = state;
 }
 
@@ -35,6 +34,10 @@ void ManagerStrategy::setFocusPoint(const geometry_msgs::Point &p){
 
 bool ManagerStrategy::doAction(){
     return do_action;
+}
+
+void ManagerStrategy::setDoAction(bool do_action){
+    this->do_action = do_action;
 }
 
 dinsow_msgs::DinsowAction ManagerStrategy::getAction(){

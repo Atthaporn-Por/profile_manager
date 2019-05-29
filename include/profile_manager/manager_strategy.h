@@ -22,6 +22,7 @@ class ManagerStrategy{
         int getCurrentState();
         std::string getCurrentStateName();
         bool doAction();
+        void setDoAction(bool do_action);
         std::string getCurrentMode();
         dinsow_msgs::DinsowAction getAction();
 };
