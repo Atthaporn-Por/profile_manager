@@ -39,6 +39,7 @@ class Profiles{
         void erase(int id);
         void setWasActive(State *state, int id);
         void setWasActive(State *state, std::vector<Profile>::iterator i);
+        void setWasActiveAll(State *state);
 
         bool isEmpty();
         bool wasAll(State &state);

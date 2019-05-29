@@ -44,6 +44,12 @@ void Profiles::setWasActive(State *state, std::vector<Profile>::iterator i){
     }
 }
 
+void Profiles::setWasActiveAll(State *state){
+    for(auto profile = profiles.begin(); profile != profiles.end(); profile++){
+        setWasActive(state, profile);
+    }
+}
+
 // return x^2 + y^2 not sqrt(x^2 + y^2)
 double Profiles::distanceOf(const Profile &p){
     return pow(p.focus_point.x, 2) + pow(p.focus_point.y, 2);
