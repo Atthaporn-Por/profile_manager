@@ -7,6 +7,7 @@ State::State(Profiles* profiles, double *distance, double *timeout){
     this->timeout = timeout;
     this->first_call = false;
     this->distance = distance;
+    this->important_id = -STATE_3;
 }
 
 void State::changeState(ManagerStrategy *manager, int state){
@@ -27,8 +28,8 @@ void State::changeState(ManagerStrategy *manager, int state){
         case STATE_3:
             manager->setState(new ThirdState(profiles, distance, timeout));
             break;
-        case STATE_4:
-            manager->setState(new FourthState(profiles, distance, timeout));
+        case FOLLOWING_STATE:
+            manager->setState(new FollowingState(profiles, distance, timeout));
             break;
         case END_STATE:
             manager->setState(new EndState(profiles, distance, timeout));
@@ -37,22 +38,24 @@ void State::changeState(ManagerStrategy *manager, int state){
 }
 
 /*---------------------------- IdleState ---------------------------*/
-IdleState::IdleState(Profiles* profiles, double *distance, double *timeout) : State(profiles, distance, timeout) {
-    first_call = true;
+IdleState::IdleState(Profiles* profiles, double *distance, double *timeout) 
+    : State(profiles, distance, timeout) {
+        first_call = true;
 }
 
 void IdleState::execute(ManagerStrategy *manager){
     //implement here
     if(!profiles->isEmpty()){
         double dist = profiles->getNearestDistance();
-        if(dist > distance[STATE_4]){
-            changeState(manager, STATE_4);
-        }else if(dist > distance[STATE_3]){
-            changeState(manager, STATE_3);
-        }else if(dist > distance[STATE_2]){
-            changeState(manager, STATE_2);
-        }else if(dist > distance[STATE_1]){
+
+        if(dist < distance[STATE_1]){
             changeState(manager, STATE_1);
+        }else if(dist < distance[STATE_2]){
+            changeState(manager, STATE_2);
+        }else if(dist < distance[STATE_3]){
+            changeState(manager, STATE_3);
+        }else if(dist < distance[FOLLOWING_STATE]){
+            changeState(manager, FOLLOWING_STATE);
         }
     }else{
         before = ros::Time::now();
@@ -69,8 +72,9 @@ std::string IdleState::getStateName(){
 }
 
 /*---------------------------- FirstState ---------------------------*/
-FirstState::FirstState(Profiles* profiles, double *distance, double *timeout) : State(profiles, distance, timeout){
-    first_call = true;
+FirstState::FirstState(Profiles* profiles, double *distance, double *timeout) 
+    : State(profiles, distance, timeout){
+        first_call = true;
 }
 
 void FirstState::execute(ManagerStrategy *manager){
@@ -91,8 +95,9 @@ std::string FirstState::getStateName(){
 }
 
 /*---------------------------- SecondState ---------------------------*/
-SecondState::SecondState(Profiles* profiles, double *distance, double *timeout) : State(profiles, distance, timeout) {
-    first_call = true;
+SecondState::SecondState(Profiles* profiles, double *distance, double *timeout) 
+    : State(profiles, distance, timeout) {
+        first_call = true;
 }
 
 void SecondState::execute(ManagerStrategy *manager){
@@ -108,8 +113,9 @@ std::string SecondState::getStateName(){
 }
 
 /*---------------------------- ThirdState ---------------------------*/
-ThirdState::ThirdState(Profiles* profiles, double *distance, double *timeout) : State(profiles, distance, timeout) {
-    first_call = true;
+ThirdState::ThirdState(Profiles* profiles, double *distance, double *timeout) 
+    : State(profiles, distance, timeout) {
+        first_call = true;
 } 
 
 void ThirdState::execute(ManagerStrategy *manager){
@@ -125,29 +131,46 @@ std::string ThirdState::getStateName(){
 }
 
 /*---------------------------- FourthState ---------------------------*/
-FourthState::FourthState(Profiles* profiles, double *distance, double *timeout) : State(profiles, distance, timeout) {
-    first_call = true;
+FollowingState::FollowingState(Profiles* profiles, double *distance, double *timeout) 
+    : State(profiles, distance, timeout) {
+        first_call = true;
 }
 
-void FourthState::execute(ManagerStrategy *manager){
-   if(first_call){
-
-   }else{
-
-   }
+void FollowingState::execute(ManagerStrategy *manager){
+    if(important_id == -STATE_3){
+        if(profiles->wasAll(*this)){
+            manager->setFocusPoint(profiles->getNearestPoint());
+        }else{
+            manager->setFocusPoint(profiles->getNearestPoint(*this, distance[STATE_3]));
+            changeState(manager, STATE_3);
+        }
+    }else if(important_id == -STATE_2){
+        if(profiles->wasAll(*this)){
+            manager->setFocusPoint(profiles->getNearestPoint());
+        }else{
+            manager->setFocusPoint(profiles->getNearestPoint(*this, distance[STATE_2]));
+            changeState(manager, STATE_2);
+        }
+    }else{
+        manager->setFocusPoint(profiles->getFocusPoint(important_id));
+        if(profiles->distanceOf(profiles->getFocusPoint(important_id)) > distance[STATE_1]){
+            changeState(manager, IDLE_STATE);
+        }
+    }    
 }
 
-int FourthState::getState(){
-    return STATE_4;
+int FollowingState::getState(){
+    return FOLLOWING_STATE;
 }
 
-std::string FourthState::getStateName(){
-    return "STATE_4";
+std::string FollowingState::getStateName(){
+    return "FOLLOWING_STATE";
 }
 
 /*---------------------------- EndState ---------------------------*/
-EndState::EndState(Profiles* profilesm, double *distance, double *timeout) : State(profiles, distance, timeout) {
-    first_call = true;
+EndState::EndState(Profiles* profiles, double *distance, double *timeout) 
+    : State(profiles, distance, timeout) {
+        first_call = true;
 } 
 
 void EndState::execute(ManagerStrategy *manager){
