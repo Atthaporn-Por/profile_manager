@@ -19,6 +19,7 @@ class State{
         double *distance;
         bool first_call;
         Profiles* profiles;
+        int important_id;
     public:
         State();
         State(Profiles* profiles, double *distance, double *timeout);
@@ -60,9 +61,9 @@ class ThirdState : public State{
         std::string getStateName();
 };
 
-class FourthState : public State{
+class FollowingState : public State{
     public:
-        FourthState(Profiles* profiles, double *distance, double *timeout);
+        FollowingState(Profiles* profiles, double *distance, double *timeout);
         void execute(ManagerStrategy *manager);
         int getState();
         std::string getStateName();
