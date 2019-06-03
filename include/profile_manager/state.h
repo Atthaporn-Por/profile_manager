@@ -10,6 +10,7 @@
 
 
 class ManagerStrategy;
+class Profiles;
 
 class State{
     protected:
