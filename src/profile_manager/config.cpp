@@ -2,10 +2,11 @@
 
 Config::Config(){
     this->frequenzy = 10.0;
-    this->distance[STATE_1] = 0.70;
-    this->distance[STATE_2] = 1.00;
-    this->distance[STATE_3] = 2.00;
+    this->distance[STATE_1] = 1.00;
+    this->distance[STATE_2] = 2.00;
+    this->distance[STATE_3] = 3.00;
     this->distance[FOLLOWING_STATE] = 3.50;
+    this->timeout[IDLE_STATE] = 1.5;
     this->timeout[STATE_1] = 5.0;
     this->timeout[STATE_2] = 5.0;
     this->timeout[STATE_3] = 5.0;
@@ -27,9 +28,9 @@ Config::Config(ros::NodeHandle &n){
     this->name_space = ros::this_node::getNamespace();
     this->node_name = ros::this_node::getName();
     n.param<double>(resolveTopic("frequenzy"), frequenzy, 10.0);
-    n.param<double>(resolveTopic("state_1_distance"), distance[STATE_1], 0.70);
-    n.param<double>(resolveTopic("state_2_distance"), distance[STATE_2], 1.00);
-    n.param<double>(resolveTopic("state_3_distance"), distance[STATE_3], 2.00);
+    n.param<double>(resolveTopic("state_1_distance"), distance[STATE_1], 1.00);
+    n.param<double>(resolveTopic("state_2_distance"), distance[STATE_2], 2.00);
+    n.param<double>(resolveTopic("state_3_distance"), distance[STATE_3], 3.00);
     n.param<double>(resolveTopic("state_4_distance"), distance[FOLLOWING_STATE], 3.50);
     n.param<std::string>(resolveTopic("idle_state_action"), state_action[IDLE_STATE].action_id, "10001");
     n.param<std::string>(resolveTopic("state_1_action"), state_action[STATE_1].action_id, "10002");
@@ -37,6 +38,7 @@ Config::Config(ros::NodeHandle &n){
     n.param<std::string>(resolveTopic("state_3_action"), state_action[STATE_3].action_id, "10004");
     n.param<std::string>(resolveTopic("state_4_action"), state_action[FOLLOWING_STATE].action_id, "10005");
     n.param<std::string>(resolveTopic("end_state_action"), state_action[END_STATE].action_id, "10006");
+    n.param<double>(resolveTopic("idle_timeout"), timeout[IDLE_STATE], 1.5);
     n.param<double>(resolveTopic("state_1_timeout"), timeout[STATE_1], 5.0);
     n.param<double>(resolveTopic("state_2_timeout"), timeout[STATE_2], 5.0);
     n.param<double>(resolveTopic("state_3_timeout"), timeout[STATE_3], 5.0);
