@@ -19,15 +19,24 @@ ProfileManagerRos::ProfileManagerRos(ros::NodeHandle &n) : ProfileManager(n){
         &ProfileManagerRos::stopService, this
     );
     this->dinsow_config_client = n.serviceClient<dinsow_msgs::DinsowStore>("dinsow_config");
+    this->worker = boost::thread(boost::bind(&ProfileManagerRos::run, this));
 }
 
 void ProfileManagerRos::peopleCb(const skeleton_msgs::People::ConstPtr &p){
+    ROS_DEBUG("recived data from /body/dinsow4/skeleton/people size : %d", (int)p->people.size());
+    if(p->people.size() > 0){
+        if(starting)
+            isReady = true;
+    }else{
+        isReady = false;
+    }
     for(auto person : p->people){
         profiles.add(state, std::atoi(person.name.c_str()), person.skeleton.joints[0].position);
     }
 }   
 
 void  ProfileManagerRos::dbChangeCb(const dinsow_msgs::DBChange::ConstPtr &p){
+    ROS_DEBUG("recived data from /db_change");
     //implement here
 }
 
@@ -51,10 +60,12 @@ void ProfileManagerRos::publish(const geometry_msgs::Point &p){
 }
 
 bool ProfileManagerRos::startService(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res){
+    ROS_INFO("%s is started", ros::this_node::getName().c_str());
     return start();
 }
 
 bool ProfileManagerRos::stopService(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res){
+    ROS_INFO("%s is started", ros::this_node::getName().c_str());
     return stop();
 }
 
@@ -62,21 +73,26 @@ void ProfileManagerRos::run(){
     //implement here
     ros::Rate r(config.getFrequenzy());
     boost::mutex::scoped_lock lock(mutex);
-    
     while(ros::ok()){
         if(isReady){
+            ROS_INFO_ONCE("ready");
             while(!starting){
                 cv.wait(lock, [this]{return starting;});
             }
             if(manager_strategy->doAction()){
+                ROS_INFO("do_action");
                 publish(manager_strategy->getAction());
+                manager_strategy->setDoAction(false);
             }
-            if(manager_strategy->getCurrentStateName == "FOLLOWING_STATE"){
-                publish(manager_strategy->getFocusPoint());
+            geometry_msgs::Point point= manager_strategy->getFocusPoint();
+            if(manager_strategy->getCurrentStateName() == "FOLLOWING_STATE"){
+                publish(point);
             }
-            publish(manager_strategy->getCurrentStateName());
         }
+        publish(manager_strategy->getCurrentStateName());
+        profiles.update();
         r.sleep();
+        ros::spinOnce();
     }
 }
 
