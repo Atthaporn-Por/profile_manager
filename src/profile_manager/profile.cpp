@@ -12,13 +12,7 @@ void Profiles::add(State *state, int id, const geometry_msgs::Point &p){
             profile->focus_point = p;
             setWasActive(state, id);
             break;
-        }
-        if(ros::Time::now() - profile->seen_time > ros::Duration(1)){
-            profile = profiles.erase(profile);
-            if(profile == profiles.end())
-                break;
-        }
-        
+        } 
     }
     profiles.push_back(Profile(id, p));
     setWasActive(state, id);
@@ -65,7 +59,6 @@ void Profiles::setWasActiveAll(State *state){
         setWasActive(state, profile);
     }
 }
-
 
 // return x^2 + y^2 not sqrt(x^2 + y^2)
 double Profiles::distanceOf(const Profile &p){
