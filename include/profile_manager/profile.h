@@ -9,6 +9,7 @@
 #include <stdexcept>
 
 class ManagerStrategy;
+class State;
 
 struct Profile{
     const static int MAX_SIZE = 10;
@@ -37,12 +38,14 @@ class Profiles{
         Profiles();
         void add(State *state, int id, const geometry_msgs::Point &p);
         void erase(int id);
+        void update();
         void setWasActive(State *state, int id);
         void setWasActive(State *state, std::vector<Profile>::iterator i);
         void setWasActiveAll(State *state);
-
+        
         bool isEmpty();
         bool wasAll(State &state);
+        bool wasAll(int state);
         int getNearestId();
         geometry_msgs::Point getFocusPoint(int id);
         geometry_msgs::Point getNearestPoint();

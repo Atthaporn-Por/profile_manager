@@ -13,6 +13,12 @@ void Profiles::add(State *state, int id, const geometry_msgs::Point &p){
             setWasActive(state, id);
             break;
         }
+        if(ros::Time::now() - profile->seen_time > ros::Duration(1)){
+            profile = profiles.erase(profile);
+            if(profile == profiles.end())
+                break;
+        }
+        
     }
     profiles.push_back(Profile(id, p));
     setWasActive(state, id);
@@ -22,6 +28,16 @@ void Profiles::erase(int id){
     for(auto profile = profiles.begin(); profile != profiles.end(); profile++){
         if(profile->id == id){
             profiles.erase(profile);
+        }
+    }
+}
+
+void Profiles::update(){
+    for(auto profile = profiles.begin(); profile != profiles.end(); profile++){
+        if(ros::Time::now() - profile->seen_time > ros::Duration(1)){
+            profile = profiles.erase(profile);
+            if(profile == profiles.end())
+                break;
         }
     }
 }
@@ -50,6 +66,7 @@ void Profiles::setWasActiveAll(State *state){
     }
 }
 
+
 // return x^2 + y^2 not sqrt(x^2 + y^2)
 double Profiles::distanceOf(const Profile &p){
     return pow(p.focus_point.x, 2) + pow(p.focus_point.y, 2);
@@ -66,8 +83,12 @@ double Profiles::getNearestDistance(){
 
 bool Profiles::wasAll(State &state){
     int current_state = state.getState();
+    return wasAll(current_state);
+}
+
+bool Profiles::wasAll(int state){
     for(auto profile : profiles){
-        if(!profile.wasActive[current_state]){
+        if(!profile.wasActive[state]){
             return false;
         }
     }
