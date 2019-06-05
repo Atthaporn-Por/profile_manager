@@ -11,7 +11,7 @@ ProfileManager::ProfileManager(){
 
 ProfileManager::ProfileManager(ros::NodeHandle &n){
     boost::mutex::scoped_lock lock(mutex);
-    starting = false;
+    starting = true;
     isReady = false;
     
     this->config = Config(n);
