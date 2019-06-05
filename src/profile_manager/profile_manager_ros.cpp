@@ -5,8 +5,8 @@ ProfileManagerRos::ProfileManagerRos(ros::NodeHandle &n) : ProfileManager(n){
     this->n = n;
     this->action_pub = n.advertise<dinsow_msgs::DinsowAction>("/dinsow_action", 1);
     this->state_pub = n.advertise<std_msgs::String>(config.resolveTopic("state"), 1, true);
-    this->focus_point_pub = n.advertise<geometry_msgs::Point>(config.resolveTopic("focus_point"), 1);
-    this->people_sub = n.subscribe<skeleton_msgs::People>("/body/dinsow4/skeleton/people", 5,
+    this->focus_point_pub = n.advertise<geometry_msgs::Point>(config.resolveTopic("focus_point"), 10);
+    this->people_sub = n.subscribe<skeleton_msgs::People>("/body/dinsow4/skeleton/people", 1,
         boost::bind(&ProfileManagerRos::peopleCb, this, _1)
     );
     this->db_change_sub = n.subscribe<dinsow_msgs::DBChange>("/db_change", 1,
@@ -88,6 +88,9 @@ void ProfileManagerRos::run(){
             if(manager_strategy->getCurrentStateName() == "FOLLOWING_STATE"){
                 publish(point);
             }
+        }else{
+            profiles.update();
+            manager_strategy->getFocusPoint();
         }
         publish(manager_strategy->getCurrentStateName());
         profiles.update();

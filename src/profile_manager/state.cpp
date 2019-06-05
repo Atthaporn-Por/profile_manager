@@ -12,6 +12,10 @@ State::State(Profiles* profiles, double *distance, double *timeout){
 
 void State::changeState(ManagerStrategy *manager, int state){
     ROS_INFO("Count Donw : %f", (ros::Time::now() - before).toSec() );
+
+    if(profiles->isEmpty() && getState() == IDLE_STATE)
+        before = ros::Time::now();
+
     if(ros::Time::now() - before < ros::Duration(timeout[this->getState()]) && getState() != IDLE_STATE){
         return;
     }
@@ -58,7 +62,6 @@ IdleState::IdleState(Profiles* profiles, double *distance, double *timeout)
 
 void IdleState::execute(ManagerStrategy *manager){
     //implement here
-    ROS_INFO("Idle_state is executed");
     if(!profiles->isEmpty()){
         double dist = profiles->getNearestDistance();
         ROS_INFO("dist in Idle_State : %f", sqrt(dist));
@@ -103,7 +106,7 @@ void FirstState::execute(ManagerStrategy *manager){
         changeState(manager, IDLE_STATE);
         return;
     }
-    if(profiles->distanceOf(profiles->getFocusPoint(important_id)) > distance[STATE_1]){
+    if(profiles->distanceOf(profiles->getFocusPoint(important_id)) > distance[STATE_1] +0.30){
         changeState(manager, IDLE_STATE);
         return;
     }
@@ -193,6 +196,7 @@ FollowingState::FollowingState(Profiles* profiles, double *distance, double *tim
 void FollowingState::execute(ManagerStrategy *manager){
     if(profiles->isEmpty()){
         changeState(manager, IDLE_STATE);
+        return;
     }
     if(important_id == -STATE_3){
         if(!profiles->wasAll(STATE_3)){
@@ -210,7 +214,7 @@ void FollowingState::execute(ManagerStrategy *manager){
         }
     }else{
         manager->setFocusPoint(profiles->getFocusPoint(important_id));
-        if(!profiles->distanceOf(profiles->getFocusPoint(important_id)) > distance[STATE_1]){
+        if(!profiles->distanceOf(profiles->getFocusPoint(important_id)) > distance[STATE_1] + 0.30){
             changeState(manager, IDLE_STATE);
         }
     }    
