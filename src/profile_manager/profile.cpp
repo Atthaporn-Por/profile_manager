@@ -7,13 +7,19 @@ Profiles::Profiles(){
 
 
 void Profiles::add(State *state, int id, const geometry_msgs::Point &p){
+    if(p.z > 0.6 || p.x > 3.5 || (abs(p.x) + abs(p.y) + abs(p.z) < 0.00000002 )){
+        return;
+    }
     for(auto profile = profiles.begin(); profile != profiles.end(); profile++){
         if(profile->id == id){
+            ROS_WARN("Fouund id : %d", id);
             profile->focus_point = p;
+            profile->seen_time = ros::Time::now();
             setWasActive(state, id);
-            break;
+            return;
         } 
     }
+    ROS_WARN("Not Fouund id : %d", id);
     profiles.push_back(Profile(id, p));
     setWasActive(state, id);
 }
@@ -28,12 +34,16 @@ void Profiles::erase(int id){
 
 void Profiles::update(){
     for(auto profile = profiles.begin(); profile != profiles.end(); profile++){
-        if(ros::Time::now() - profile->seen_time > ros::Duration(1)){
+        if(ros::Time::now() - profile->seen_time > ros::Duration(1.2)){
             profile = profiles.erase(profile);
             if(profile == profiles.end())
                 break;
         }
     }
+    // for(auto profile = profiles.begin(); profile != profiles.end(); profile++){
+    //     ROS_INFO("id : %d , {x: %f, y :%f, z: %f}", profile->id, profile->focus_point.x, profile->focus_point.y, profile->focus_point.z);
+    // }
+    // ROS_INFO("============================================================");
 }
 
 void Profiles::setWasActive(State *state, int id){
@@ -89,8 +99,10 @@ bool Profiles::wasAll(int state){
 }
 
 int Profiles::getNearestId(){
-    if(isEmpty())
+    if(isEmpty()){
+        ROS_ERROR("profiles is empty");
         throw "profiles is empty";
+    }
 
     auto profile = profiles.begin();
     auto nearest_person = profiles.begin();
@@ -113,12 +125,16 @@ geometry_msgs::Point Profiles::getFocusPoint(int id){
              return profile.focus_point;
          }
      }
+     return getNearestPoint();
+     ROS_ERROR("no id : %d in profiles", id);
      throw "no id : %d in profiles", id;
 }
 
 geometry_msgs::Point Profiles::getNearestPoint(State& state, double max_distance){
-    if(isEmpty())
+    if(isEmpty()){
+        ROS_ERROR("profiles is empty");
         throw "profiles is empty";
+    }
     if(wasAll(state)){
         return getNearestPoint();
     }else{
