@@ -75,8 +75,10 @@ double Config::getFrequenzy(){
 
 double Config::getTimeout(int state){
     int key[] = {-1, 0, 1, 2, 3, -1};
-    if(key[state] == -1)
+    if(key[state] == -1){
+        ROS_ERROR("this state dont have timeout");
         throw "this state dont have timeout";
+    }
     return timeout[key[state]];
 }
 
